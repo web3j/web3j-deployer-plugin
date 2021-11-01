@@ -2,21 +2,26 @@
 
 package org.web3j.deploy
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginConvention
 import java.net.URL
 import java.net.URLClassLoader
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.plugins.JavaPluginConvention
 
-class DeployPlugin: Plugin<Project> {
+class DeployPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val urls : MutableList<URL> = mutableListOf()
+        val urls: MutableList<URL> = mutableListOf()
+        // Inject the deployer library into the project
+        project.pluginManager.apply(JavaPlugin::class.java)
+        project.dependencies.add("implementation", "org.web3j:web3j-deployer:"+ "4.8.8")
+
 
         // Adding runtime classpath of project
         project.afterEvaluate {
             val plugin = it.convention.getPlugin(JavaPluginConvention::class.java)
             plugin.sourceSets.forEach { sourceSet ->
-                sourceSet.runtimeClasspath.forEach{path ->
+                sourceSet.runtimeClasspath.forEach { path ->
                     urls.add(path.toURI().toURL())
                 }
             }
