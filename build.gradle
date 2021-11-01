@@ -8,13 +8,13 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 
-description 'Gradle Plugin for managing deployments of Ethereum contracts and transactions.'
-
 
 gradlePlugin {
     plugins {
         deploy {
             id = 'org.web3j.deploy'
+            displayName = 'Web3j deployer plugin'
+            description = 'Gradle Plugin for managing deployments of Ethereum contracts and transactions.'
             implementationClass = 'org.web3j.deploy.DeployPlugin'
         }
     }
